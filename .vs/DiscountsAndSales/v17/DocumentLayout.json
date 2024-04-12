@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\saledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:saledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\saledataobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:saledataobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\discountsandsales.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:discountsandsales.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DiscountsAndSales.csproj",
+              "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\DiscountsAndSales.csproj",
+              "RelativeDocumentMoniker": "DiscountsAndSales.csproj",
+              "ToolTip": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\DiscountsAndSales.csproj",
+              "RelativeToolTip": "DiscountsAndSales.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-04-05T12:33:49.142Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SaleDataObject.cs",
+              "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\SaleDataObject.cs",
+              "RelativeDocumentMoniker": "SaleDataObject.cs",
+              "ToolTip": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\SaleDataObject.cs",
+              "RelativeToolTip": "SaleDataObject.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-29T18:33:25.889Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SaleData.cs",
+              "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\SaleData.cs",
+              "RelativeDocumentMoniker": "SaleData.cs",
+              "ToolTip": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\SaleData.cs",
+              "RelativeToolTip": "SaleData.cs",
+              "ViewState": "AQIAACUAAAAAAAAAAAA8wEYAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T23:15:33.639Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Plugin.cs",
+              "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\Plugin.cs",
+              "RelativeDocumentMoniker": "Plugin.cs",
+              "ToolTip": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\Plugin.cs",
+              "RelativeToolTip": "Plugin.cs",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAYwO0AAABfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-24T23:15:12.493Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
