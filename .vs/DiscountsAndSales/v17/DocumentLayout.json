@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\discountsandsales.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:discountsandsales.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\saledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:saledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\saledataobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:saledataobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\discountsandsales.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:discountsandsales.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\saledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|solutionrelative:saledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EF81D6E6-256B-4694-AA58-FBD68C5DAA31}|DiscountsAndSales.csproj|d:\\users\\james\\documents\\supermarket simulator modding\\sales and discounts\\discountsandsales\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,12 +30,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DiscountsAndSales",
+              "DocumentIndex": 2,
+              "Title": "DiscountsAndSales.csproj",
               "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\DiscountsAndSales.csproj",
               "RelativeDocumentMoniker": "DiscountsAndSales.csproj",
               "ToolTip": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\DiscountsAndSales.csproj",
@@ -55,12 +55,11 @@
               "RelativeToolTip": "Sale.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-16T19:59:16.022Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-16T19:59:16.022Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "SaleDataObject.cs",
               "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\SaleDataObject.cs",
               "RelativeDocumentMoniker": "SaleDataObject.cs",
@@ -73,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SaleData.cs",
               "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\SaleData.cs",
               "RelativeDocumentMoniker": "SaleData.cs",
@@ -81,18 +80,17 @@
               "RelativeToolTip": "SaleData.cs",
               "ViewState": "AQIAAD8AAAAAAAAAAAAQwFoAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-24T23:15:33.639Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-24T23:15:33.639Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Plugin.cs",
               "DocumentMoniker": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\Plugin.cs",
               "RelativeDocumentMoniker": "Plugin.cs",
               "ToolTip": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\Plugin.cs",
               "RelativeToolTip": "Plugin.cs",
-              "ViewState": "AQIAAFcBAAAAAAAAAAAAAJkBAAAvAAAA",
+              "ViewState": "AQIAAMQAAAAAAAAAAAAqwOYAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-24T23:15:12.493Z",
               "EditorCaption": ""

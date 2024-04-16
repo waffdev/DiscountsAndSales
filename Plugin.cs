@@ -207,21 +207,18 @@ namespace DiscountsAndSales
             float currentCost = priceManager.CurrentCost(item);
             float marketPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
 
-            float newPrice = newPrice = CrossoverClass.Round(marketPrice * _fixedDiscountMultiplier, 1);
+            float newPrice = CrossoverClass.Round(marketPrice * _fixedDiscountMultiplier, 1);
 
             if (_discountBasedOnSetPrice)
             {
-                if (newPrice < marketPrice * 1.1) // If the new price is MORE than the market price increased by 10%, the discount would be too powerful
-                {
-                    newPrice = CrossoverClass.Round(priceSetByPlayer * _fixedDiscountMultiplier, 1);
-                } else
-                {
+                float provisionalNewPrice = CrossoverClass.Round(priceSetByPlayer * _fixedDiscountMultiplier, 1);
+
+                if (provisionalNewPrice < marketPrice * 1.1) // If the new price is MORE than the market price increased by 10%, the discount would be too powerful
+                    newPrice = provisionalNewPrice;
+                else
                     CrossoverClass.CustomWarning("Price too high. Discounting market price.");
-                }
-            }
-                
-            
-                
+            }// If the new price is MORE than the market price increased by 10%, the discount would be too powerful
+
             if (newPrice < priceSetByPlayer)
             {
                 priceManager.PriceSet(new Pricing(item, newPrice));
