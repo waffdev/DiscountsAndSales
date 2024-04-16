@@ -4,6 +4,6 @@ namespace DiscountsAndSales
     {
         public const string PLUGIN_GUID = "DiscountsAndSales";
         public const string PLUGIN_NAME = "DiscountsAndSales";
-        public const string PLUGIN_VERSION = "1.0";
+        public const string PLUGIN_VERSION = "1.2";
     }
 }

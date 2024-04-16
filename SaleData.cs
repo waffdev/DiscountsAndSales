@@ -14,7 +14,7 @@ namespace DiscountsAndSales
 {
     internal class SaleData
     {
-        private List<int> itemIdsOnSale;
+        private List<Sale> itemsOnSale;
         private List<int> debugItems;
 
         private Plugin _plugin;
@@ -25,7 +25,7 @@ namespace DiscountsAndSales
 
         public SaleData()
         {
-            itemIdsOnSale = new List<int>();
+            itemsOnSale = new List<Sale>();
             debugItems = new List<int>();
 
         }
@@ -61,7 +61,7 @@ namespace DiscountsAndSales
             {
                 //File.Create(saveFileInfo.Directory.FullName + @"\DiscountsAndSales\sale_data.json").Close();
                 SaleDataObject input = new SaleDataObject();
-                input.idList = new List<int>();
+                input.saleList = new List<Sale>();
                 input.debugProducts = new List<int>();
                 string output = JsonConvert.SerializeObject(input);
                 using (StreamWriter sw = new StreamWriter(saveFileInfo.Directory.FullName + @"\DiscountsAndSales\sale_data.json"))
@@ -69,11 +69,24 @@ namespace DiscountsAndSales
                     sw.Write(output);
                 }
             }
-                
 
             SaleDataObject saleDataObject = JsonConvert.DeserializeObject<SaleDataObject>(File.ReadAllText(saveFileInfo.Directory.FullName + @"\DiscountsAndSales\sale_data.json"));
-            itemIdsOnSale = saleDataObject.idList;
+            itemsOnSale = saleDataObject.saleList;
             debugItems = saleDataObject.debugProducts;
+
+            if (itemsOnSale == null) 
+            {
+                _plugin.LogError("Item sale list is null, erasing sale data and falling back.");
+                SaleDataObject cleanInput = new SaleDataObject();
+                cleanInput.saleList = new List<Sale>();
+                cleanInput.debugProducts = new List<int>();
+                string output = JsonConvert.SerializeObject(cleanInput);
+                using (StreamWriter sw = new StreamWriter(saveFileInfo.Directory.FullName + @"\DiscountsAndSales\sale_data.json"))
+                {
+                    sw.Write(output);
+                }
+            }
+
         }
 
         public void SaveData(SaveManager saveManager)
@@ -91,7 +104,7 @@ namespace DiscountsAndSales
                 File.Create(saveFileInfo.Directory.FullName + @"\DiscountsAndSales\sale_data.json").Close();
 
             SaleDataObject saleDataObject = new SaleDataObject();
-            saleDataObject.idList = itemIdsOnSale;
+            saleDataObject.saleList = itemsOnSale;
             saleDataObject.debugProducts = debugItems;
             string output = JsonConvert.SerializeObject(saleDataObject);
             using (StreamWriter sw = new StreamWriter(saveFileInfo.Directory.FullName + @"\DiscountsAndSales\sale_data.json"))
@@ -100,9 +113,9 @@ namespace DiscountsAndSales
             }
         }
 
-        public List<int> GetItemsOnSale()
+        public List<Sale> GetItemsOnSale()
         {
-            return itemIdsOnSale;
+            return itemsOnSale;
         }
 
         public List<int> GetDebugItems()
@@ -123,34 +136,34 @@ namespace DiscountsAndSales
 
         public bool IsMaxProductsOnSale()
         {
-            return itemIdsOnSale.Count >= MAX_ITEMS_ON_SALE;
+            return itemsOnSale.Count >= MAX_ITEMS_ON_SALE;
         }
 
         public void DoTamperChecks()
         {
             int count = 0;
-            List<int> itemsToRemove = new List<int>();
-            itemIdsOnSale.ForEach(id =>
+            List<Sale> itemsToRemove = new List<Sale>();
+            itemsOnSale.ForEach(sale =>
             {
                 // Tamper Checks
                 if (count >= MAX_ITEMS_ON_SALE)
                 {
-                    _plugin.LogError("Sale data has been tampered with. There is a MAXIMUM of " + MAX_ITEMS_ON_SALE + ", skipping product ID: " + id);
-                    itemsToRemove.Add(id);
+                    _plugin.LogError("Sale data has been tampered with. There is a MAXIMUM of " + MAX_ITEMS_ON_SALE + ", skipping product ID: " + sale);
+                    itemsToRemove.Add(sale);
                 }
 
-                if (!CanItemBePlacedOnSale(id))
+                if (!CanItemBePlacedOnSale(sale.productID))
                 {
-                    _plugin.LogError("Sale data has been tampered with. Products are in sale data that cannot be discounted, skipping product ID: " + id);
-                    itemsToRemove.Add(id);
+                    _plugin.LogError("Sale data has been tampered with. Products are in sale data that cannot be discounted, skipping product ID: " + sale);
+                    itemsToRemove.Add(sale);
                 }
 
                 count++;
             });
 
-            itemsToRemove.ForEach(id =>
+            itemsToRemove.ForEach(sale =>
             {
-                itemIdsOnSale.Remove(id);
+                itemsOnSale.Remove(sale);
             });
         }
     }

@@ -26,6 +26,7 @@ namespace DiscountsAndSales
         private float _fixedDiscountMultiplier = 0.8f;
         private int _fixedDiscount = 20;
         private float _profitLimit = 1f;
+        private bool _discountBasedOnSetPrice = false;
         private KeyCode saleKeyBind = KeyCode.T;
 
         private Texture2D _carboardTexture;
@@ -36,10 +37,13 @@ namespace DiscountsAndSales
 
         private void Awake()
         {
+
             configPercentageDiscount = Config.Bind("Discounts And Sales", "PercentageDiscount", 20, "The percentage discount for items on sale. Must be a whole number value, greater than 0 and is recommended not to be above 30% (for now)");
             ConfigEntry<string> configKeybind;  configKeybind = Config.Bind("Discounts And Sales", "SaleKeybind", "T", "The keybind to set an item on sale. Case sensitive and single letters must be capital. For a list of key codes, see https://docs.unity3d.com/ScriptReference/KeyCode.html");
             ConfigEntry<float> configProfitLimit = Config.Bind("Discounts And Sales", "ProfitLimit", 1f, "The minimum profit a discounted item must have to be allowed to discount, default is $1.00");
+            ConfigEntry<bool> discountBasedOnSetPrice = Config.Bind("Discounts And Sales", "DiscountBasedOnSetPrice", false, "Sets the discount calculation to be performed on the price set by the player INSTEAD of the market price.");
             _profitLimit = configProfitLimit.Value;
+            _discountBasedOnSetPrice = discountBasedOnSetPrice.Value;
 
             if (configPercentageDiscount.Value == 0 || configPercentageDiscount.Value > 100)
             {
@@ -121,7 +125,8 @@ namespace DiscountsAndSales
                     GameObject menu = settingPriceCanvas.transform.Find("Menu").gameObject;
                     if (menu.activeSelf)
                     {
-                        if (saleData.GetItemsOnSale().Contains(CrossoverClass.CurrentProductID))
+                        
+                        if (saleData.GetItemsOnSale().Exists(item => item.productID == CrossoverClass.CurrentProductID))
                             TakeOffSale(CrossoverClass.CurrentProductID);
                         else
                             PlaceOnSale(CrossoverClass.CurrentProductID);
@@ -143,7 +148,7 @@ namespace DiscountsAndSales
 
                 saleData.GetItemsOnSale().ForEach(item =>
                 {
-                    displayManager.GetLabeledEmptyDisplaySlots(item).ForEach(displaySlot =>
+                    displayManager.GetLabeledEmptyDisplaySlots(item.productID).ForEach(displaySlot =>
                     {
                         GameObject saleTag = displaySlot.gameObject.transform.Find("Sale Tag").gameObject;
                         saleTag.SetActive(false);
@@ -158,11 +163,11 @@ namespace DiscountsAndSales
             if (scene.name == "Main Scene")
             {
                 SaleData.Instance.LoadData(Singleton<SaveManager>.Instance);
-                List<int> itemsOnSale = saleData.GetItemsOnSale();
+                List<Sale> itemsOnSale = saleData.GetItemsOnSale();
 
                 itemsOnSale.ForEach(item =>
                 {
-                    Logger.LogInfo(item.ToString() + " is on sale");
+                    Logger.LogInfo(item.productID.ToString() + " is on sale");
                 });
 
                 StartCoroutine(WaitUntilLoaded());
@@ -179,16 +184,10 @@ namespace DiscountsAndSales
 
 
             // Change price of on-sale products
-            PriceManager priceManager = Singleton<PriceManager>.Instance;
             
             saleData.GetItemsOnSale().ForEach(item =>
             {
-                ProductSO productSO = Singleton<IDManager>.Instance.ProductSO(item);
-                float currentCost = priceManager.CurrentCost(item);
-                float marketPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
-                float newPrice = CrossoverClass.Round(marketPrice * _fixedDiscountMultiplier, 1);
-
-                priceManager.PriceSet(new Pricing(item, newPrice));
+                ChangePrice(item.productID);
             });
 
             DayCycleManager dayCycleManager = Singleton<DayCycleManager>.Instance;
@@ -196,6 +195,46 @@ namespace DiscountsAndSales
 
 
 
+        }
+
+        private float ChangePrice(int item)
+        {
+            PriceManager priceManager = Singleton<PriceManager>.Instance;
+
+            float priceSetByPlayer = priceManager.GetPriceSetByPlayer(item).Price;
+
+            ProductSO productSO = Singleton<IDManager>.Instance.ProductSO(item);
+            float currentCost = priceManager.CurrentCost(item);
+            float marketPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
+
+            float newPrice = newPrice = CrossoverClass.Round(marketPrice * _fixedDiscountMultiplier, 1);
+
+            if (_discountBasedOnSetPrice)
+            {
+                if (newPrice < marketPrice * 1.1) // If the new price is MORE than the market price increased by 10%, the discount would be too powerful
+                {
+                    newPrice = CrossoverClass.Round(priceSetByPlayer * _fixedDiscountMultiplier, 1);
+                } else
+                {
+                    CrossoverClass.CustomWarning("Price too high. Discounting market price.");
+                }
+            }
+                
+            
+                
+            if (newPrice < priceSetByPlayer)
+            {
+                priceManager.PriceSet(new Pricing(item, newPrice));
+
+                return newPrice;
+            } else
+            {
+                // Don't do anything, price is already low enough
+
+                return priceSetByPlayer;
+            }
+
+            
         }
 
         private void AddSaleTags()
@@ -222,6 +261,12 @@ namespace DiscountsAndSales
 
                     saleTag.transform.SetParent(displaySlot.gameObject.transform);
                     saleTag.transform.SetLocalPositionAndRotation(new Vector3(priceTagObject.transform.localPosition.x - 0.1f, priceTagObject.transform.localPosition.y, priceTagObject.transform.localPosition.z), Quaternion.identity);
+                    
+                    if (priceTagObject.transform.localScale.y != 1f) // resize labels active
+                    {
+                        saleTag.transform.SetLocalPositionAndRotation(new Vector3(priceTagObject.transform.localPosition.x - (0.1f * priceTagObject.transform.localScale.y), priceTagObject.transform.localPosition.y, priceTagObject.transform.localPosition.z), Quaternion.identity);
+                    }
+
                     saleTag.transform.rotation = priceTagObject.transform.rotation;
                     saleTag.name = "Sale Tag";
 
@@ -296,7 +341,7 @@ namespace DiscountsAndSales
                 return;
             }
 
-            saleData.GetItemsOnSale().Add(CrossoverClass.CurrentProductID);
+            saleData.GetItemsOnSale().Add(new Sale(CrossoverClass.CurrentProductID, Singleton<PriceManager>.Instance.GetPriceSetByPlayer(CrossoverClass.CurrentProductID).Price, 0));
 
             // Visual price tag fix
             DisplayManager displayManager = Singleton<DisplayManager>.Instance;
@@ -312,12 +357,8 @@ namespace DiscountsAndSales
             });
 
             // Change price
-            PriceManager priceManager = Singleton<PriceManager>.Instance;
-            float currentCost = priceManager.CurrentCost(productID);
-            float marketPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
-            float newPrice = CrossoverClass.Round(marketPrice * _fixedDiscountMultiplier, 1);
+            float newPrice = ChangePrice(productID);
 
-            priceManager.PriceSet(new Pricing(productID, newPrice));
             GameObject settingPriceCanvas = GameObject.Find("Setting Price Canvas");
             GameObject menu = settingPriceCanvas.transform.Find("Menu").gameObject;
             GameObject window = menu.transform.Find("Window").gameObject;
@@ -331,7 +372,10 @@ namespace DiscountsAndSales
 
         private void TakeOffSale(int productID)
         {
-            saleData.GetItemsOnSale().Remove(CrossoverClass.CurrentProductID);
+            IEnumerable<Sale> saleQuery = saleData.GetItemsOnSale().Where(item => item.productID == productID);
+            float oldPrice = saleQuery.First().previousPrice;
+
+            saleData.GetItemsOnSale().RemoveAll(item => item.productID == CrossoverClass.CurrentProductID);
             DisplayManager displayManager = Singleton<DisplayManager>.Instance;
             displayManager.GetDisplaySlots(productID, true).ForEach(displaySlot =>
             {
@@ -347,15 +391,19 @@ namespace DiscountsAndSales
             ProductSO productSO = Singleton<IDManager>.Instance.ProductSO(productID);
             PriceManager priceManager = Singleton<PriceManager>.Instance;
             float currentCost = priceManager.CurrentCost(productID);
-            float marketPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
+            float newPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
 
-            priceManager.PriceSet(new Pricing(productID, marketPrice));
+            if (_discountBasedOnSetPrice)
+                newPrice = oldPrice;
+
+            priceManager.PriceSet(new Pricing(productID, newPrice));
+
             GameObject settingPriceCanvas = GameObject.Find("Setting Price Canvas");
             GameObject menu = settingPriceCanvas.transform.Find("Menu").gameObject;
             GameObject window = menu.transform.Find("Window").gameObject;
             GameObject priceInput = window.transform.Find("Price Panel").transform.Find("Price Info").transform.Find("Price Input").gameObject;
-            Logger.LogInfo("Price change: " + marketPrice.ToString());
-            priceInput.GetComponent<MoneyInputRestrictor>().OnEndEdit(marketPrice.ToString());
+            Logger.LogInfo("Price change: " + newPrice.ToString());
+            priceInput.GetComponent<MoneyInputRestrictor>().OnEndEdit(newPrice.ToString());
 
             if (saleData.GetItemsOnSale().Count <= 0)
             {
@@ -366,7 +414,7 @@ namespace DiscountsAndSales
 
         private void DoVisualPricesFix()
         {
-            List<int> itemsOnSale = saleData.GetItemsOnSale();
+            List<Sale> itemsOnSale = saleData.GetItemsOnSale();
 
             DisplayManager displayManager = Singleton<DisplayManager>.Instance;
             foreach (Display display in displayManager.m_Displays)
@@ -374,7 +422,7 @@ namespace DiscountsAndSales
                 foreach (DisplaySlot displaySlot in display.m_DisplaySlots)
                 {
 
-                    if (!itemsOnSale.Contains(displaySlot.ProductID))
+                    if (!itemsOnSale.Exists(item => item.productID == displaySlot.ProductID))
                         continue;
                     PriceTag priceTag = displaySlot.m_PriceTag;
                     GameObject priceTagObject = priceTag.gameObject;
@@ -462,7 +510,7 @@ namespace DiscountsAndSales
                     saleInstructionTmPro.color = Color.red;
                 }
 
-                if (saleData.GetItemsOnSale().Contains(CrossoverClass.CurrentProductID))
+                if (saleData.GetItemsOnSale().Exists(item => item.productID == CrossoverClass.CurrentProductID))
                 {
                     saleTextTmPro.text = "On Sale? Yes";
                     inputField.readOnly = true;
@@ -502,7 +550,7 @@ namespace DiscountsAndSales
         static void CustomerStartShoppingPostfix(Customer __instance)
         {
             Debug.Log("Harmony Patch: Customer Started Shopping");
-            List<int> productsOnSale = CrossoverClass.ProductsOnSale;
+            List<Sale> productsOnSale = CrossoverClass.ProductsOnSale;
             ItemQuantity shoppingList = __instance.ShoppingList;
 
             DisplayManager displayManager = Singleton<DisplayManager>.Instance;
@@ -536,7 +584,7 @@ namespace DiscountsAndSales
                     int quantity = shoppingList.Products[key];
                     int newQuantity = 0;
                     newQuantity += quantity;
-                    if (productsOnSale.Contains(key))
+                    if (productsOnSale.Exists(item => item.productID == key))
                     {
                         if (quantity < 3)
                         {
@@ -554,11 +602,11 @@ namespace DiscountsAndSales
                 
             });
 
-            productsOnSale.ForEach(productID =>
+            productsOnSale.ForEach(sale =>
             {
-                if (!shoppingList.Products.Keys.Contains(productID))
+                if (!shoppingList.Products.Keys.Contains(sale.productID))
                 {
-                    ProductSO productSO = Singleton<IDManager>.Instance.ProductSO(productID);
+                    ProductSO productSO = Singleton<IDManager>.Instance.ProductSO(sale.productID);
                     int productRandomCeiling = 0;
                     if (productSO.GridLayoutInStorage.productCount <= 16)
                     {
@@ -577,15 +625,15 @@ namespace DiscountsAndSales
                     if (UnityEngine.Random.RandomRangeInt(0, randomCeiling) == 1)
                     {
                         int quantToAdd = UnityEngine.Random.RandomRangeInt(1, productRandomCeiling + 2); // Add two on as they don't have any of the product beforehand
-                        newShoppingList.Add(productID, quantToAdd);
-                        Debug.Log("Patched Customer for On-Sale Item >> Item: " + productID + "  Blank Slate >> Quantity Added:" + quantToAdd);
+                        newShoppingList.Add(sale.productID, quantToAdd);
+                        Debug.Log("Patched Customer for On-Sale Item >> Item: " + sale.productID + "  Blank Slate >> Quantity Added:" + quantToAdd);
                     }
                     else
                     {
-                        Debug.Log("Patched Customer for On-Sale Item >> Item: " + productID + "  Failed flip, no product added.");
+                        Debug.Log("Patched Customer for On-Sale Item >> Item: " + sale.productID + "  Failed flip, no product added.");
                     }
                 }
-            });
+            }) ;
 
             shoppingList.Products = newShoppingList;
 
@@ -618,16 +666,7 @@ namespace DiscountsAndSales
 
             saleData.GetItemsOnSale().ForEach(item =>
             {
-                Logger.LogInfo($"Conflict with AutoPriceUpdater, resetting on-sale price for Product ID: {item}");
-                ProductSO productSO = Singleton<IDManager>.Instance.ProductSO(item);
-                if (productSO != null)
-                {
-                    float currentCost = priceManager.CurrentCost(item);
-                    float marketPrice = (float)Math.Round((double)(currentCost + currentCost * productSO.OptimumProfitRate / 100f), 2);
-                    float newPrice = CrossoverClass.Round(marketPrice * _fixedDiscountMultiplier, 1);
-
-                    priceManager.PriceSet(new Pricing(item, newPrice));
-                }
+                ChangePrice(item.productID);
             });
         }
 
@@ -644,7 +683,7 @@ namespace DiscountsAndSales
         {
             CrossoverClass.ProductsOnSale.ForEach(product =>
             {
-                if (product == __instance.ProductID)
+                if (product.productID == __instance.ProductID)
                 {
                     GameObject saleTag = __instance.gameObject.transform.Find("Sale Tag").gameObject;
                     if (!saleTag.activeSelf)
@@ -664,7 +703,7 @@ namespace DiscountsAndSales
         public static int CurrentProductID = 0;
 
         // Sale data
-        public static List<int> ProductsOnSale = new List<int>();
+        public static List<Sale> ProductsOnSale = new List<Sale>();
         public static List<int> DebugProducts = new List<int>();
 
         public static List<int> debugStats = new List<int>();

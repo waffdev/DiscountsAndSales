@@ -2738,7 +2738,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.2.0",
     "restore": {
       "projectUniqueName": "D:\\Users\\james\\Documents\\Supermarket Simulator Modding\\Sales and Discounts\\DiscountsAndSales\\DiscountsAndSales.csproj",
       "projectName": "DiscountsAndSales",

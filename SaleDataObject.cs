@@ -6,7 +6,7 @@ namespace DiscountsAndSales
 {
     internal class SaleDataObject
     {
-        public List<int> idList;
+        public List<Sale> saleList;
         public List<int> debugProducts;
     }
 }
